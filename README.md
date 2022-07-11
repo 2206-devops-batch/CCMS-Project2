@@ -23,7 +23,8 @@ After a successful push to `Docker Hub`, `Jenkins` uses `SSH` to `pull` and `run
 ### Setup & Run:
 
 ```bash
-docker build -t CCMS-Project2
+docker build -t ccms-project2-image
+docker run -p 5000:5000 --rm --name ccms-project2-container ccms-project2-image
 
 or
 
