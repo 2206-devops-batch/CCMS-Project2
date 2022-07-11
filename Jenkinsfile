@@ -17,11 +17,11 @@ pipeline {
             }
         }
         stage('Run') {
-            agent { label '' }
+            agent {label ''}
             steps {
-                    sh 'sudo docker system prune -af'
-                    sh 'sudo docker pull chamoo334/p2:latest'
-                    sh 'sudo docker run -p 5000:5000 -d --name p2_app chamoo334/p2'
+                sh 'sudo docker system prune -af'
+                sh 'sudo docker pull chamoo334/p2:latest'
+                sh 'sudo docker run -p 5000:5000 -d --name p2_app chamoo334/p2'
             }
         }
     }
