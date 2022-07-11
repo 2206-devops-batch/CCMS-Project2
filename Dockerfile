@@ -3,13 +3,14 @@
 FROM python:3.10.5-slim-bullseye
 
 # Setting work directory
-WORKDIR /MonikaiT-project1
+WORKDIR /app
+
 # Install dependencies
-COPY ./requirements.txt /MonikaiT-project1/requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Copy src files
-COPY . /MonikaiT-project1/ 
+COPY . .
 
 # Run Server
 RUN export FLASK_APP=app.py
