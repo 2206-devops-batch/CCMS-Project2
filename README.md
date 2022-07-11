@@ -16,7 +16,7 @@
 
 ## Continuous Deployment
 
-After a successful push to `Docker Hub`, `Jenkins` uses `SSH` to `pull` and `run the latest image` from Docker Hub.
+After a successful push to `Docker Hub`, `Jenkins` uses `SSH` to `pull` and `run the latest image`.
 
 ## Local Development
 
