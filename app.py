@@ -22,3 +22,4 @@ def calculate():
 def about():
     return '<h3>This is a Flask web application intended to work cohesively with a CI/CD pipeline.</h3>'
 
+app.run(debug=False, host='0.0.0.0', port=5000)
