@@ -46,7 +46,7 @@ kind: Service
 metadata:
   name: webapp-service
 spec:
-  tpye: NodePort
+  type: NodePort
   selector:
     app: webapp
   ports:
