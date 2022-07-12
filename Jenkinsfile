@@ -17,7 +17,8 @@ pipeline {
         stage('Run') {
             agent { label 'linuxdeploy' }
             steps {
-                sh 'sudo docker system prune -af'
+                // sh 'sudo docker system prune -af'
+                sh 'sudo docker rm -f p2_app'
                 sh 'sudo docker pull chamoo334/p2official:latest'
                 sh 'sudo docker run -p 5000:5000 -d --name p2_app chamoo334/p2official'
             }
