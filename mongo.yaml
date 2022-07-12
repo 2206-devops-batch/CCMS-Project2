@@ -23,3 +23,15 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+spec:
+  selector:
+    app: mongo
+  ports:
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
