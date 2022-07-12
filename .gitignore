@@ -134,3 +134,5 @@ forms.py
 venv/
 *.pem
 proj2.txt
+
+mongo-secret.yaml
