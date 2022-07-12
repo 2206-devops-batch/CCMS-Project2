@@ -3,10 +3,6 @@ pipeline {
     options {
         skipDefaultCheckout()      // Don't checkout automatically
     }
-    environment {
-        DU = 'err'
-        DP = 'err'
-    }
     stages {
         stage('Test, Build, & Archive') {
             agent { label 'linuxagent2' }
@@ -23,6 +19,7 @@ pipeline {
         stage('Run') {
             agent { label 'linuxdeploy' }
             steps {
+                sh 'printenv'
                 // sh 'sudo docker system prune -af'
                 // sh 'sudo docker pull chamoo334/p2official:latest'
                 // sh 'sudo docker run -p 5000:5000 -d --name p2_app chamoo334/p2official'
