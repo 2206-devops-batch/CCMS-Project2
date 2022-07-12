@@ -35,9 +35,10 @@ spec:
               name: mongo-secret
               key: mongo-password
         - name: DB_URL
-          configMapKeyRef:
-            name: mongo-config
-            key: mongo-url
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config
+              key: mongo-url
 
 ---
 apiVersion: v1
