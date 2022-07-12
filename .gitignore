@@ -132,3 +132,5 @@ forms.py
 # venv
 .venv/
 venv/
+*.pem
+proj2.txt
