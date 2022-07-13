@@ -51,6 +51,24 @@ If you can't access the NodePort service webapp with `MinikubeIP:NodePort`, exec
 
     minikube service webapp-service
 
+> :warning: **Possible fix** - Add Minikube tune to service \
+
+- <https://minikube.sigs.k8s.io/docs/handbook/accessing> \
+- <https://shubham-singh98.medium.com/minikube-dashboard-in-aws-ec2-881143a2209e>
+
+    STEP 1: Run minikube dashboard on EC2 instance and note down the url
+
+    $ minikube dashboard --url
+
+    STEP 2: Open another terminal and create an SSH Tunnel
+
+    ssh -i <LOCATION TO SSH PRIVATE KEY> -L <LOCAL PORT>:localhost:<REMOTE PORT ON WHICH MINIKUBE DASHBOARD IS RUNNING> user-name@IP
+    $ sudo ssh -i ~/.ssh/id_rsa -L 8081:localhost:36525 shubham@40.77.75.58
+
+    Now open your browser and open this url
+
+    <http://127.0.0.1:8081/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/error?namespace=_all>
+
 <br />
 
 ### TechWorld with Nana
@@ -58,10 +76,12 @@ If you can't access the NodePort service webapp with `MinikubeIP:NodePort`, exec
 - Kubernetes Crash Course for Absolute Beginners: <https://www.youtube.com/watch?v=s_o8dwzRlu4>
 - Minikube & Kubectl explained | Setup for Beginners | ...: <https://www.youtube.com/watch?v=E2pP1MOfo3g>
 - Kubectl Basic Commands - Create & Debug Pod ...: <https://www.youtube.com/watch?v=azuwXALfyRg>
+- Kubernetes Ingress Tutorial for Beginners | ...: <https://www.youtube.com/watch?v=80Ew_fsV4rM>
 - AWS EKS - Create Kubernetes cluster on Amazon EKS : <https://www.youtube.com/watch?v=p6xDCz00TxU>
 - DevOps Roadmap 2022 - How to become a DevOps Engineer? : <https://www.youtube.com/watch?v=9pZ2xmsSDdo>
 - What is Helm in Kubernetes? Helm and Helm Charts explained : <https://www.youtube.com/watch?v=-ykwb1d0DXU>
 - Kubernetes Tutorial for Beginners [FULL COURSE in 4 Hours]: <https://www.youtube.com/watch?v=X48VuDVv0do>
+- Kubernetes Volumes explained | Persistent Volume, ...: <https://www.youtube.com/watch?v=0swOh5C3OVM>
 
 #### Links
 
@@ -87,3 +107,20 @@ If you can't access the NodePort service webapp with `MinikubeIP:NodePort`, exec
 <https://github.com/marcel-dempers/docker-development-youtube-series>
 <https://cloud.google.com/architecture/jenkins-on-kubernetes-engine>
 <https://www.jenkins.io/doc/book/installing/kubernetes/>
+
+---
+
+# Final Steps
+
+1. AWS EKS - Create Kubernetes cluster on Amazon EKS : <https://www.youtube.com/watch?v=p6xDCz00TxU>
+2. Install Jenkins with Helm v3 on Kubernetes
+
+   a. <https://www.jenkins.io/doc/book/installing/kubernetes>
+   b. <https://cloud.google.com/architecture/jenkins-on-kubernetes-engine>
+   c. <https://www.youtube.com/watch?v=-ykwb1d0DXU> & <https://www.youtube.com/watch?v=JGtJj_nAA2s>
+
+3. Set Up Persistent Volume for Kubernetes: <https://www.youtube.com/watch?v=0swOh5C3OVM>
+4. Connecting Jenkins to Minikube Kubernetes Cluster: <https://www.youtube.com/watch?v=fodA9rM5xoo>
+5. Allow Minikube Tunnel To Services/Set up Ingress/Expose All Ports: <https://www.youtube.com/watch?v=80Ew_fsV4rM>
+6. Add & Test Tools (Docker, Docker-Compose & Others): <https://www.youtube.com/watch?v=ZPD_PzGOvFM>
+7. Connect to Jenkins dashboard & Create a Pipeline
