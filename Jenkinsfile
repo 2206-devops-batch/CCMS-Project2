@@ -18,8 +18,10 @@ pipeline {
             agent { label 'linuxdeploy' }
             steps {
                 checkout scm
+                sh 'pwd'
+                sh 'ls'
                 sshagent(['fcea763b-a663-437e-992b-c6733e3b0a56']) {
-                    sh 'scp -o StrictHostKeyChecking=no flask-dep-serv.yaml ec2-user@ec2-3-145-60-217.us-east-2.compute.amazonaws.com:/home/ec2-user'
+                    sh 'scp -o StrictHostKeyChecking=no /home/ubuntu/workspace/cm_kube_test_pipeline/flask-dep-serv.yaml ec2-user@ec2-3-145-60-217.us-east-2.compute.amazonaws.com:'
                 }
             }
         }
