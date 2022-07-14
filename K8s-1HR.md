@@ -56,18 +56,18 @@ If you can't access the NodePort service webapp with `MinikubeIP:NodePort`, exec
 - <https://minikube.sigs.k8s.io/docs/handbook/accessing> \
 - <https://shubham-singh98.medium.com/minikube-dashboard-in-aws-ec2-881143a2209e>
 
-    STEP 1: Run minikube dashboard on EC2 instance and note down the url
+  STEP 1: Run minikube dashboard on EC2 instance and note down the url
 
-    $ minikube dashboard --url
+  $ minikube dashboard --url
 
-    STEP 2: Open another terminal and create an SSH Tunnel
+  STEP 2: Open another terminal and create an SSH Tunnel
 
-    ssh -i <LOCATION TO SSH PRIVATE KEY> -L <LOCAL PORT>:localhost:<REMOTE PORT ON WHICH MINIKUBE DASHBOARD IS RUNNING> user-name@IP
-    $ sudo ssh -i ~/.ssh/id_rsa -L 8081:localhost:36525 shubham@40.77.75.58
+  ssh -i <LOCATION TO SSH PRIVATE KEY> -L <LOCAL PORT>:localhost:<REMOTE PORT ON WHICH MINIKUBE DASHBOARD IS RUNNING> user-name@IP
+  $ sudo ssh -i ~/.ssh/id_rsa -L 8081:localhost:36525 shubham@40.77.75.58
 
-    Now open your browser and open this url
+  Now open your browser and open this url
 
-    <http://127.0.0.1:8081/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/error?namespace=_all>
+  <http://127.0.0.1:8081/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/error?namespace=_all>
 
 <br />
 
@@ -123,4 +123,76 @@ If you can't access the NodePort service webapp with `MinikubeIP:NodePort`, exec
 4. Connecting Jenkins to Minikube Kubernetes Cluster: <https://www.youtube.com/watch?v=fodA9rM5xoo>
 5. Allow Minikube Tunnel To Services/Set up Ingress/Expose All Ports: <https://www.youtube.com/watch?v=80Ew_fsV4rM>
 6. Add & Test Tools (Docker, Docker-Compose & Others): <https://www.youtube.com/watch?v=ZPD_PzGOvFM>
-7. Connect to Jenkins dashboard & Create a Pipeline
+7. Use Kubernetes Pods As Jenkins Agents: <https://www.youtube.com/watch?v=ZXaorni-icg>
+8. Connect to Jenkins dashboard & Create a Pipeline
+
+---
+
+eksctl create cluster \
+--name ccms-project2-cluster \
+--version 1.22 \
+--region us-west-1 \
+--nodegroup-name linux-nodes \
+--node-type t2.micro \
+--nodes 2
+
+kubectl create namespace jenkins
+
+<!--
+kubectl create -f mongo-config.yaml -f mongo-secret.yaml -f mongo.yaml
+kubectl create -f webapp.yaml or kubectl create -f finance.yaml
+kubectl get deployments
+-->
+
+kubectl get node
+kubectl get namespaces
+kubectl get pods -w
+
+brew install helm
+helm repo add jenkins <https://charts.jenkins.io> && helm repo update && helm search repo jenkins
+
+    ```zsh
+    helm upgrade --install myjenkins jenkins/jenkins
+    &
+    helm upgrade --install -f values.yaml myjenkins jenkins/jenkins
+    ```
+
+    or
+
+    ```zsh
+    cat | curl https://raw.githubusercontent.com/installing-jenkins-on-kubernetes/jenkins-volume.yaml > jenkins-volume.yaml
+    cat | curl https://raw.githubusercontent.com/jenkins-infra/jenkins.io/master/content/doc/tutorials/kubernetes/installing-jenkins-on-kubernetes/jenkins-sa.yaml > jenkins-sa.yaml
+    cat | curl https://raw.githubusercontent.com/jenkinsci/helm-charts/main/charts/jenkins/values.yaml > jenkins-values.yaml
+
+    kubectl apply -f jenkins-volume.yaml
+    kubectl apply -f jenkins-sa.yaml
+
+    https://aws.amazon.com/blogs/storage/deploying-jenkins-on-amazon-eks-with-amazon-efs/
+    Make these modifications to jenkins-values.yaml
+
+                                minikube           EKS
+    Line 111    serviceType:    NodePort           LoadBalancer
+    Line 709    storageClass:   jenkins-pv
+    Line 745    create: false
+    Line 747    name: jenkins
+
+    helm install jenkins -n jenkins -f jenkins-values.yaml jenkinsci/jenkins
+    ```
+
+Then Run these to get admin password and tunnel access
+
+    ```zsh
+    kubectl exec --namespace default -it svc/myjenkins -c jenkins -- /bin/cat /run/secrets/additional/chart-admin-password && echo
+
+    echo http://127.0.0.1:8080
+    kubectl --namespace default port-forward svc/myjenkins 8080:8080
+
+    export SERVICE_IP=$(kubectl get svc --namespace default myjenkins --template \
+    "{{ range (index .status.loadBalancer.ingress 0) }}{{ . }}{{ end }}")
+    echo http://$SERVICE_IP/login
+
+    <https://octopus.com/blog/jenkins-helm-install-guide>
+    <https://www.bogotobogo.com/DevOps/Docker/Docker-Kubernetes-Jenkins-Helm.php>
+    <https://ncarb.github.io/eks-workshop/intermediate/210_jenkins/deploy/>
+    <https://www.eksworkshop.com/intermediate/210_jenkins/deploy/>
+    ```

@@ -1,0 +1,4 @@
+controller:
+  serviceType: LoadBalancer
+  jenkinsUrl: a34bc5fadc8d647479df80167f8fc684-990771949.us-west-1.elb.amazonaws.com
+  
