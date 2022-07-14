@@ -4,11 +4,60 @@ pipeline {
         skipDefaultCheckout()      // Don't checkout automatically
     }
     stages {
-        stage('Chris Branch') {
+        stage('Currnet Branch') {
             steps {
-                echo 'Hello World'
+                sh 'hostname'
+                echo 'Hello, Chris'
             }
         }
+        stage('Pytest Local Image') {
+            steps {
+                sh 'pyhton3 -m venv .venv'
+                sh './.venv/bin/activate'
+                sh 'pip3 install -r requirements.txt'
+                sh 'python3 -m pytest app-test.py'
+            }
+        }
+        stage('Build Docker Image & Container') {
+            steps {
+                sh 'docker build -t ccms-project2-image .'
+                sh 'docker run -d -p 5000:5000 -rm --name ccms-project2-container ccms-project2-image'
+                sh 'docker stop'
+            }
+        }
+        stage('Test Docker Hub Image') {
+            steps {
+                // sh 'docker pull chamoo334/p2official:latest'
+                sh 'docker build -t ccms-project2-image chamoo334/p2official'
+                sh 'docker run -d -p 5000:5000 -rm --name ccms-project2-container ccms-project2-image'
+                sh 'docker stop'
+            }
+        }
+        stage('Deploy To Staging') {
+            steps {
+                echo 'Used To Configure Both Blue & Green Deployments'
+                // sh ''
+                // sh ''
+                // sh 'docker push chamoo334/p2official:Prod'
+            }
+        }
+        stage('Deploy To Blue Production') {
+            steps {
+                echo 'Only Allow Deployments Tagged As A Blue-Feature'
+                // sh ''
+                // sh ''
+                // sh 'docker push chamoo334/p2official:Blue'
+            }
+        }
+        stage('Deploy To Green Production') {
+            steps {
+                echo 'Only Allow Deployments Tagged As A Green-Feature'
+                // sh ''
+                // sh ''
+                // sh 'docker push chamoo334/p2official:Green'
+            }
+        }
+
         // stage('Test, Build, & Archive') {
         //     agent { label 'linuxagent2' }
         //     steps {
@@ -19,6 +68,7 @@ pipeline {
         //         sh 'sudo docker push chamoo334/p2official'
         //     }
         // }
+
         // stage('Run') {
         //     agent { label 'linuxdeploy' }
         //     steps {
