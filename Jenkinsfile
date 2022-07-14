@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Pytest Local Image') {
             steps {
-                sh 'pyhton3 -m venv .venv'
+                sh 'python3 -m venv .venv'
                 sh './.venv/bin/activate'
                 sh 'pip3 install -r requirements.txt'
                 sh 'python3 -m pytest app-test.py'
