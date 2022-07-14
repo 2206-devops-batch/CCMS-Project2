@@ -12,11 +12,6 @@ pipeline {
         }
         stage('Pytest Local Image') {
             steps {
-                sh 'yum update && yum install python3 pip3'
-                sh 'pip3 install virtualenv'
-                sh 'virtualenv .venv'
-                sh 'virtualenv -p /usr/bin/python3 .venv'
-                sh 'source .venv/bin/activate'
                 sh 'pip3 install -r requirements.txt'
                 sh 'python3 -m pytest app-test.py'
             }
