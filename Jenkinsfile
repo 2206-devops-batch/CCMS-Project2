@@ -10,12 +10,6 @@ pipeline {
                 echo 'Hello, Chris'
             }
         }
-        stage('Pytest Local Image') {
-            steps {
-                sh 'pip3 install -r requirements.txt'
-                sh 'python3 -m pytest app-test.py'
-            }
-        }
         stage('Build Docker Image & Container') {
             steps {
                 sh 'docker build -t ccms-project2-image .'
@@ -23,12 +17,18 @@ pipeline {
                 sh 'docker stop'
             }
         }
-        stage('Test Docker Hub Image') {
+        stage('Build Docker Hub Image & Container') {
             steps {
                 // sh 'docker pull chamoo334/p2official:latest'
                 sh 'docker build -t ccms-project2-image chamoo334/p2official'
                 sh 'docker run -d -p 5000:5000 -rm --name ccms-project2-container ccms-project2-image'
                 sh 'docker stop'
+            }
+        }
+        stage('Pytest Local Directory or Image') {
+            steps {
+                sh 'pip3 install -r requirements.txt'
+                sh 'python3 -m pytest app-test.py'
             }
         }
         stage('Deploy To Staging') {
