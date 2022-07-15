@@ -1,0 +1,12 @@
+# create cluster eksctl create cluster -f test.yaml
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: p2-cluster
+  region: us-east-2
+nodeGroups:
+  - name: p2nodes
+    instancType: t2.small
+    ssh:
+      allow: true
