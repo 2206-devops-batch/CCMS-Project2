@@ -25,7 +25,7 @@ pipeline {
                 // sh 'sudo docker build . -t chamoo334/p2official'
                 // sh 'sudo docker push chamoo334/p2official'
                 // stash name: "flask-yaml", includes: "flask-dep-serv.yaml"
-                sh "echo 'future kubernetes stage'"
+                sh "echo 'testing push trigger'"
             }
         }
     }
