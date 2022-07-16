@@ -1,0 +1,5 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    image: chrisbarnes2000/ccms-project2:1.0
