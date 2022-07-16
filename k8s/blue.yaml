@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  selector:
+    matchLabels:
+      app: app
+      version: '1.0'
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: app
+        version: '1.0'
+    spec:
+      containers:
+        - name: service
+          image: chrisbarnes2000/app:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '250m'
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
