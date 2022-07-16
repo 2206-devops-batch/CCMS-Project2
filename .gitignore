@@ -136,4 +136,4 @@ venv/
 proj2.txt
 
 temp.txt
-common-resources.yaml
+*common-resources.yaml
