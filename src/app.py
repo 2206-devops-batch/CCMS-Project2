@@ -1,6 +1,14 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+import requests
+import argparse
+
 
 app = Flask(__name__, template_folder='./Templates')
+
+
+@app.route('/ping', methods=['GET'])
+def ping():
+    return "PONG VERSION 1", 200
 
 
 @app.route('/', methods=['POST', 'GET'])
