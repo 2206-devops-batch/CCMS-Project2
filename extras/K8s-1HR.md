@@ -196,3 +196,6 @@ Then Run these to get admin password and tunnel access
     <https://ncarb.github.io/eks-workshop/intermediate/210_jenkins/deploy/>
     <https://www.eksworkshop.com/intermediate/210_jenkins/deploy/>
     ```
+
+<https://www.linkedin.com/pulse/blue-green-deployment-kubernetes-itay-melamed>
+<https://github.com/infinitelambda/istio-helm-deployment>
