@@ -4,10 +4,10 @@ kind: Service
 metadata:
   name: flask-app-service
 spec:
-  type: ClusterIP # TODO:ClusterIP vs LoadBalancer
+  type: LoadBalancer
   selector:
     app: flask-app #find pods with this label
   ports:
     - protocol: "TCP"
-      port: 6000
+      port: 5000
       targetPort: 5000
