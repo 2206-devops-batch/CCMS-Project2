@@ -24,7 +24,7 @@ pipeline {
                 changelog '.*^\\[BLUE\\] .+$'
             }
             steps {
-                echo 'Found BLUE'
+                echo 'Found [BLUE]'
             //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
             //         sh "kubectl cluster-info"
             //     }
