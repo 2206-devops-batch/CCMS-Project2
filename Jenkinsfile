@@ -11,6 +11,7 @@ pipeline {
             agent { label 'linuxagent1' }
             steps {
                 checkout scm
+                echo 'Testing skip'
                 
                 script {
                     RESULTS = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true)
