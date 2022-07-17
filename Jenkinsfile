@@ -10,8 +10,8 @@ pipeline {
         stage('Test, Build, & Archive') {
             agent { label 'linuxagent1' }
             steps {
-                // checkout scm
-                // sh 'git log -n 1'
+                checkout scm
+                sh 'git log -1 --pretty=%B'
                 echo "DEP_COLOR is '${DEP_COLOR}'"
                 script {
                     DEP_COLOR = "GREEN"
