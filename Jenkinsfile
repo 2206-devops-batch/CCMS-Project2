@@ -17,7 +17,7 @@ pipeline {
                     RESULTS = sh (
                         script: "git log -1 --pretty=%B | grep [BLUE]",
                         returnStatus: true
-                    ) == 0
+                    )
                     // DEP_COLOR = "GREEN"
                 }
 
