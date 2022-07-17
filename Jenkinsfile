@@ -7,7 +7,7 @@ pipeline {
         stage('Test, Build, & Archive') {
             agent { label 'linuxagent1' }
             steps {
-                checkout scm
+                // checkout scm
                 // dir("src") {
                 //     sh 'pip3 install -r requirements.txt'
                 //     sh 'python3 -m pytest app-test.py'
