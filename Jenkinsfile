@@ -15,16 +15,16 @@ pipeline {
                 
                 script {
                     RESULTS = sh (script: "git log -1 | grep '\\[GREEN\\]'", returnStatus: true)
-                    // DEP_COLOR = "GREEN"
+
+                    if (RESULTS) {
+                        DEP_COLOR = "GREEN"
+                    } else {
+                        echo 'deploy blue'
+                    }
                 }
                 echo "RESULTS: ${RESULTS}"
                 echo "DEP_COLOR is '${DEP_COLOR}'"
 
-                if (RESULTS) {
-                    echo 'deploy green'
-                } else {
-                    echo 'deploy blue'
-                }
                 // DEP_Color = 'GREEN'
                 // dir("src") {
                 //     sh 'pip3 install -r requirements.txt'
