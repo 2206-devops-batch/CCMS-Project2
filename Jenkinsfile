@@ -15,17 +15,10 @@ pipeline {
                 echo "DEP_COLOR is '${DEP_COLOR}'"
                 script {
                     RESULTS = sh (
-                        script: "git log -1 --pretty=%B"
+                        script: "git log -1 --pretty=%B | grep 'GREEN'"
                     )
                     // DEP_COLOR = "GREEN"
                 }
-                assert RESULTS =~ /(.*)GREEN(.*)/
-
-                // if (RESULTS == (.*)GREEN(.*)) {
-                //     echo "GREEN"
-                // } else {
-                //     echo "BLUE"
-                // }
 
                 echo "RESULTS: ${RESULTS}"
                 // DEP_Color = 'GREEN'
