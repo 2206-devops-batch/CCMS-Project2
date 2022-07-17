@@ -20,7 +20,7 @@ pipeline {
                     }
                 }
 
-                echo 'Configure '
+                echo 'TODO: change docker hub image information to reflect blue and green based on DEP_COLOR'
 
                 // dir("src") {
                 //     sh 'pip3 install -r requirements.txt'
@@ -35,9 +35,9 @@ pipeline {
             agent { label 'linuxagent2' }
             steps {
                 echo "DEP_COLOR is '${DEP_COLOR}'"
-                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
-                    sh "kubectl cluster-info"
-                }
+                // withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
+                //     sh "kubectl cluster-info"
+                // }
             }
         }
     }
