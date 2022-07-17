@@ -11,9 +11,14 @@ pipeline {
             agent { label 'linuxagent1' }
             steps {
                 checkout scm
-                sh 'git log -1 --pretty=%B'
+                
                 echo "DEP_COLOR is '${DEP_COLOR}'"
                 script {
+                    RESULTS = sh (
+                        script: "git log -1 --pretty=%B | grep [BLUE]",
+                        returnStatus: true
+                    ) == 0
+                    echo "RESULTS: ${RESULTS}"
                     DEP_COLOR = "GREEN"
                 }
                 // DEP_Color = 'GREEN'
@@ -27,14 +32,14 @@ pipeline {
                 echo 'testing and whatnot'
             }
         }
-        stage('Deploy to EKS') {
-            agent { label 'linuxagent2' }
-            steps {
-                echo "DEP_COLOR is '${DEP_COLOR}'"
-            //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
-            //         sh "kubectl cluster-info"
-            //     }
-            }
-        }
+        // stage('Deploy to EKS') {
+        //     agent { label 'linuxagent2' }
+        //     steps {
+        //         echo "DEP_COLOR is '${DEP_COLOR}'"
+        //     //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
+        //     //         sh "kubectl cluster-info"
+        //     //     }
+        //     }
+        // }
     }
 }
