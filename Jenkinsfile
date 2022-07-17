@@ -18,9 +18,10 @@ pipeline {
                         script: "git log -1 --pretty=%B | grep [BLUE]",
                         returnStatus: true
                     ) == 0
-                    echo "RESULTS: ${RESULTS}"
-                    DEP_COLOR = "GREEN"
+                    // DEP_COLOR = "GREEN"
                 }
+
+                echo "RESULTS: ${RESULTS}"
                 // DEP_Color = 'GREEN'
                 // dir("src") {
                 //     sh 'pip3 install -r requirements.txt'
