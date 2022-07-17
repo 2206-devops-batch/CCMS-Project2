@@ -18,14 +18,13 @@ pipeline {
                 echo 'testing and whatnot'
             }
         }
-        stage('EKS Deployment') {
+        stage('EKS Initial Setup') {
             agent { label 'linuxagent2' }
             steps {
-                // sh 'printenv'
-                echo "Incorporate EKS: build number ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: 'https://0A1A4A8601F380D4399A007D4FC2C7E1.gr7.us-east-2.eks.amazonaws.com']) {
-                    sh "kubectl cluster-info"
-                }
+                echo "Incorporate EKS: build number ${env.BUILD_ID} on ${env.JENKINS_URL} using cluster server ${env.EKS-SERVER}"
+                // withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: 'https://0A1A4A8601F380D4399A007D4FC2C7E1.gr7.us-east-2.eks.amazonaws.com']) {
+                //     sh "kubectl cluster-info"
+                // }
             }
         }
     }
