@@ -30,5 +30,17 @@ pipeline {
             //     }
             }
         }
+        stage('Deploy Blue EKS') {
+            agent { label 'linuxagent2' }
+            when {
+                changelog '.*^\\[GREEN\\] .+$'
+            }
+            steps {
+                echo 'Found BLUE'
+            //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
+            //         sh "kubectl cluster-info"
+            //     }
+            }
+        }
     }
 }
