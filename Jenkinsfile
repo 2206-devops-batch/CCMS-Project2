@@ -1,5 +1,8 @@
 pipeline {
     agent none
+    environment {
+       DEP_COLOR = 'BLUE'
+    }
     options {
         skipDefaultCheckout()      // Don't checkout automatically
     }
@@ -8,6 +11,10 @@ pipeline {
             agent { label 'linuxagent1' }
             steps {
                 // checkout scm
+                // sh 'git log -n 1'
+                echo "DEP_COLOR is '${DEP_COLOR}'"
+                DEP_Color = 'GREEN'
+                echo "DEP_COLOR is '${DEP_COLOR}'"
                 // dir("src") {
                 //     sh 'pip3 install -r requirements.txt'
                 //     sh 'python3 -m pytest app-test.py'
@@ -21,7 +28,6 @@ pipeline {
         stage('Deploy to EKS') {
             agent { label 'linuxagent2' }
             steps {
-                sh 'git log -n 1'
             //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
             //         sh "kubectl cluster-info"
             //     }
