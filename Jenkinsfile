@@ -11,10 +11,9 @@ pipeline {
             agent { label 'linuxagent1' }
             steps {
                 checkout scm
-                RESULTS = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true) 
                 
                 script {
-                    RESULTS = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true) 
+                    RESULTS = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true)
                     // DEP_COLOR = "GREEN"
                 }
                 echo "RESULTS: ${RESULTS}"
