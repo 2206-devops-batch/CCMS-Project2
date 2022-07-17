@@ -21,12 +21,9 @@ pipeline {
         stage('EKS Initial Setup') {
             agent { label 'linuxagent2' }
             steps {
-                // echo "Incorporate EKS: build number ${env.BUILD_ID} on ${env.JENKINS_URL} using cluster server"
-                echo "Incorporate EKS: build number ${env.BUILD_ID} on ${env.JENKINS_URL} using cluster server ${EKS}"
-
-                // withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: 'https://0A1A4A8601F380D4399A007D4FC2C7E1.gr7.us-east-2.eks.amazonaws.com']) {
-                //     sh "kubectl cluster-info"
-                // }
+                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
+                    sh "kubectl cluster-info"
+                }
             }
         }
     }
