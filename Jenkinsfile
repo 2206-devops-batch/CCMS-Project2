@@ -19,12 +19,13 @@ pipeline {
                     )
                     // DEP_COLOR = "GREEN"
                 }
+                assert RESULTS =~ /(.*)GREEN(.*)/
 
-                if (RESULTS == *"GREEN"*) {
-                    echo "GREEN"
-                } else {
-                    echo "BLUE"
-                }
+                // if (RESULTS == (.*)GREEN(.*)) {
+                //     echo "GREEN"
+                // } else {
+                //     echo "BLUE"
+                // }
 
                 echo "RESULTS: ${RESULTS}"
                 // DEP_Color = 'GREEN'
