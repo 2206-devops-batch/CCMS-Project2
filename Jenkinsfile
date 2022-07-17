@@ -19,7 +19,7 @@ pipeline {
                     if (RESULTS == 1) {
                         DEP_COLOR = "GREEN"
                     } else {
-                        echo 'deploy blue'
+                        DEP_COLOR = "BLUE"
                     }
                 }
                 echo "RESULTS: ${RESULTS}"
