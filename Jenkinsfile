@@ -21,12 +21,7 @@ pipeline {
         stage('Deploy to EKS') {
             agent { label 'linuxagent2' }
             steps {
-                result = sh (script: "git log -1 | grep '\\[blue\\]'", returnStatus: true) 
-                if (result != 0) {
-                    echo "performing build..."
-                } else {
-                    echo "not running..."
-                }
+                sh 'git log -n 1'
             //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
             //         sh "kubectl cluster-info"
             //     }
