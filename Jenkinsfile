@@ -20,12 +20,12 @@ pipeline {
         }
         stage('Deploy Blue EKS') {
             agent { label 'linuxagent2' }
-            echo changelog
-            // steps {
+            steps {
+                echo changelog
             //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
             //         sh "kubectl cluster-info"
             //     }
-            // }
+            }
         }
     }
 }
