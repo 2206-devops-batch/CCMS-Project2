@@ -18,19 +18,20 @@ pipeline {
                 echo 'testing and whatnot'
             }
         }
-        stage('Deploy Blue EKS') {
+        stage('Deploy BLUE EKS') {
             agent { label 'linuxagent2' }
             when {
                 changelog '.*^\\[BLUE\\] .+$'
             }
             steps {
                 echo 'Found BLUE'
+                echo "changelog '.*^\\[BLUE\\] .+$'"
             //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
             //         sh "kubectl cluster-info"
             //     }
             }
         }
-        stage('Deploy Blue EKS') {
+        stage('Deploy GREEN EKS') {
             agent { label 'linuxagent2' }
             when {
                 changelog '.*^\\[GREEN\\] .+$'
