@@ -16,7 +16,7 @@ pipeline {
                 script {
                     RESULTS = sh (script: "git log -1 | grep '\\[GREEN\\]'", returnStatus: true)
 
-                    if (RESULTS) {
+                    if (RESULTS == 1) {
                         DEP_COLOR = "GREEN"
                     } else {
                         echo 'deploy blue'
