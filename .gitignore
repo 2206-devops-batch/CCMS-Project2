@@ -137,3 +137,5 @@ proj2.txt
 
 temp.txt
 *common-resources.yaml
+kubernetes/old/
+eksv119-nginx.yaml

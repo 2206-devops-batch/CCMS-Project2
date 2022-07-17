@@ -14,9 +14,21 @@ spec:
         app: flask-app
     spec:
       containers:
-      - name: flask-app-container
+      - name: flask-app
         image: chamoo334/p2official
         imagePullPolicy: Always
         ports: #port container will expose
         - containerPort: 5000
-          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-app-svc
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 5000
+    protocol: TCP
+  selector:
+    app: flask-app
