@@ -22,6 +22,9 @@ pipeline {
             agent { label 'linuxagent2' }
             steps {
                 echo "Incorporate EKS: build number ${env.BUILD_ID} on ${env.JENKINS_URL}"
+                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${env.eks-server}"]) {
+                    sh "kubectl cluster-info"
+                }
             }
         }
     }
