@@ -18,13 +18,14 @@ pipeline {
                 echo 'testing and whatnot'
             }
         }
-        stage('EKS Initial Setup') {
+        stage('Deploy Blue EKS') {
             agent { label 'linuxagent2' }
-            steps {
-                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
-                    sh "kubectl cluster-info"
-                }
-            }
+            echo changelog
+            // steps {
+            //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
+            //         sh "kubectl cluster-info"
+            //     }
+            // }
         }
     }
 }
