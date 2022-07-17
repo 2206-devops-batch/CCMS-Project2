@@ -11,14 +11,9 @@ pipeline {
             agent { label 'linuxagent1' }
             steps {
                 checkout scm
+                RESULTS = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true) 
                 
                 echo "DEP_COLOR is '${DEP_COLOR}'"
-                script {
-                    RESULTS = sh (
-                        script: "git log -1 --pretty=%B"
-                    )
-                    // DEP_COLOR = "GREEN"
-                }
                 echo "RESULTS: ${RESULTS}"
                 // DEP_Color = 'GREEN'
                 // dir("src") {
