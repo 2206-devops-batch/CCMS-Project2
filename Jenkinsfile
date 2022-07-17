@@ -21,8 +21,9 @@ pipeline {
         stage('EKS Deployment') {
             agent { label 'linuxagent2' }
             steps {
+                sh 'printenv'
                 echo "Incorporate EKS: build number ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${env.eks-server}"]) {
+                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: 'https://0A1A4A8601F380D4399A007D4FC2C7E1.gr7.us-east-2.eks.amazonaws.com']) {
                     sh "kubectl cluster-info"
                 }
             }
