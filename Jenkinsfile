@@ -20,6 +20,8 @@ pipeline {
                     }
                 }
 
+                echo 'Configure '
+
                 // dir("src") {
                 //     sh 'pip3 install -r requirements.txt'
                 //     sh 'python3 -m pytest app-test.py'
