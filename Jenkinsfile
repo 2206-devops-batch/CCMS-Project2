@@ -18,25 +18,15 @@ pipeline {
                 echo 'testing and whatnot'
             }
         }
-        stage('Deploy BLUE EKS') {
+        stage('Deploy to EKS') {
             agent { label 'linuxagent2' }
-            when {
-                changelog '.*^\\[BLUE\\] .+$'
-            }
             steps {
-                echo 'Found [BLUE]'
-            //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
-            //         sh "kubectl cluster-info"
-            //     }
-            }
-        }
-        stage('Deploy GREEN EKS') {
-            agent { label 'linuxagent2' }
-            when {
-                changelog '.*^\\[GREEN\\] .+$'
-            }
-            steps {
-                echo 'Found BLUE'
+                result = sh (script: "git log -1 | grep '\\[blue\\]'", returnStatus: true) 
+                if (result != 0) {
+                    echo "performing build..."
+                } else {
+                    echo "not running..."
+                }
             //     withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
             //         sh "kubectl cluster-info"
             //     }
