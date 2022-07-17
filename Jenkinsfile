@@ -15,13 +15,11 @@ pipeline {
                 echo "DEP_COLOR is '${DEP_COLOR}'"
                 script {
                     RESULTS = sh (
-                        script: "grep 'GREEN' <<< git log -1 --pretty=%B"
+                        script: "git log -1 --pretty=%B | grep 'NOTHING'"
                     )
                     // DEP_COLOR = "GREEN"
                 }
                 echo "RESULTS: ${RESULTS}"
-                TEST = (RESULTS =~ "(.*)GREEN(.*)")
-                echo "TEST: ${TEST}"
                 // DEP_Color = 'GREEN'
                 // dir("src") {
                 //     sh 'pip3 install -r requirements.txt'
