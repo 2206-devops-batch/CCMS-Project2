@@ -1,25 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: finance-app
+  labels:
+    app: finance-app
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: app
-      version: '1.0'
-  replicas: 2
+      app: finance-app
+      version: 'v2.0.0'
   template:
     metadata:
       labels:
-        app: app
-        version: '1.0'
+        app: finance-app
+        version: 'v2.0.0'
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9101'
     spec:
       containers:
-        - name: service
-          image: chrisbarnes2000/app:2.0
+        - name: finance-app
+          image: chrisbarnes2000/ccms-project2
           imagePullPolicy: Always
+          env:
+            - name: VERSION
+              value: v2.0.0
           ports:
-            - containerPort: 5000
+            - name: http
+              containerPort: 8080
+            - name: probe
+              containerPort: 8086
+            - name: flask
+              containerPort: 5000
           resources:
             requests:
               memory: '64Mi'
@@ -27,3 +40,14 @@ spec:
             limits:
               memory: '128Mi'
               cpu: '500m'
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: probe
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: probe
+            periodSeconds: 5

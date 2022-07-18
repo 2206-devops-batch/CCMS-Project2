@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: finance-app
+  labels:
+    app: finance-app
+spec:
+  # type: NodePort      # Deployment - Self Managed
+  type: LoadBalancer    # Deployment - EKS/MiniKube Managed
+  ports:
+    - name: http
+      protocol: TCP
+      port: 5000
+      targetPort: flask
+    - name: http
+      port: 80
+      targetPort: http
+
+  # Note here that we match both the app and the version
+  selector:
+    app: finance-app
+    version: v1.0.0   # v2.0.0
