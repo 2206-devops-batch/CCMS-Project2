@@ -3,6 +3,9 @@ pipeline {
     environment {
        DEP_COLOR = "GREEN"
     }
+    options {
+        skipDefaultCheckout()      // Don't checkout automatically
+    }
     stages {
         stage("Test, Build, & Archive") {
             agent { label "linuxagent1" }
@@ -19,6 +22,7 @@ pipeline {
                     }
                     
                     if (RESULTS2 == 1) {
+                        checkout scm
                         sh "pip3 install -r ./src/requirements.txt"
                         sh "python3 -m pytest ./src/app-test.py"
                         sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
@@ -33,6 +37,7 @@ pipeline {
             agent { label "linuxagent2" }
             steps {
                 echo "DEP_COLOR=${DEP_COLOR}"
+                // checkout scm
                 // sh "kubectl apply -f kubernetes/flask-deployment.yaml"
                 // sh "kubectl apply -f kubernetes/flask-service.yaml"
                 // sh "kubectl apply -f kubernetes/nginx-ingress.yaml"
