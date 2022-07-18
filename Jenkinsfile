@@ -34,9 +34,7 @@ pipeline {
             agent { label 'linuxagent2' }
             steps {
                 echo "DEP_COLOR is '${DEP_COLOR}'"
-                withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: "${EKS}"]) {
-                    sh "kubectl cluster-info"
-                }
+                sh "kubectl cluster-info"
             }
         }
     }
