@@ -25,7 +25,7 @@ pipeline {
                     sh "pip3 install -r ./src/requirements.txt"
                     sh "python3 -m pytest ./src/app-test.py"
                     sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
-                    sh "sudo docker push chamoo334/p2official"
+                    sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
 
                 // stash name: "flask-yaml", includes: "flask-dep-serv.yaml"
             }
@@ -33,7 +33,7 @@ pipeline {
         stage("Deploy to EKS") {
             agent { label "linuxagent2" }
             steps {
-                echo "chamoo334/p2official:${DEP_COLOR}"
+                echo "yaml deploy chamoo334/p2official:${DEP_COLOR}"
                 sh "kubectl cluster-info"
             }
         }
