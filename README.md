@@ -39,10 +39,10 @@ eksctl create cluster \
 ```
 
 ### Either/Both
-<!--
+
 1. Run Blue Server/Version
 
-  docker pull chrisbarnes2000/ccms-project2:1.0 ccms-project2
+  docker pull chrisbarnes2000/ccms-project2 ccms-project2
 
   kubectl apply -f blue.yaml
   kubectl get pods
@@ -64,8 +64,8 @@ eksctl create cluster \
 3. After Green Server/Version has been smoke tested/verified update `service.yaml` version to green version and archive blue
 4. Start Next Feature on Blue but increase is version as it's the new Green
 5. Repeat
--->
 
+<!--
 ```zsh
 kubectl create namespace dev && kubectl label namespace dev istio-injection=enabled
 kubectl create namespace stage && kubectl label namespace stage istio-injection=enabled
@@ -80,6 +80,7 @@ kubectl create -f istio-config/vsvc.yaml
 
 More Info Here: <https://github.com/infinitelambda/istio-helm-deployment> & <https://www.linkedin.com/pulse/blue-green-deployment-kubernetes-itay-melamed>
 ```
+-->
 
 <!--
 ### Setup & Run:
