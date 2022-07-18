@@ -1,40 +1,41 @@
 pipeline {
     agent none
     environment {
-       DEP_COLOR = "BLUE"
-    }
-    options {
-        skipDefaultCheckout()      // Don't checkout automatically
+       DEP_COLOR = "GREEN"
     }
     stages {
         stage("Test, Build, & Archive") {
             agent { label "linuxagent1" }
             steps {
-                checkout scm
                 
                 script {
-                    RESULTS = sh (script: "git log -1 | grep '\\[GREEN\\]'", returnStatus: true)
+                    RESULTS1 = sh (script: "git log -1 | grep '\\[BLUE\\]'", returnStatus: true)
+                    RESULTS2 = sh (script: "git log -1 | grep '\\[CI SKIP\\]'", returnStatus: true)
 
-                    if (RESULTS == 0) {
-                        DEP_COLOR = "GREEN"
+                    echo "RESULTS1=${RESULTS1} and RESULTS2=${RESULTS2}"
+
+                    if (RESULTS1 == 0) {
+                        DEP_COLOR = "BLUE"
                     }
+                    
+                    if (RESULTS2 == 1) {
+                        sh "pip3 install -r ./src/requirements.txt"
+                        sh "python3 -m pytest ./src/app-test.py"
+                        sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                        sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
+                    }
+                    
                 }
-
-                echo "TODO: change docker hub image information to reflect blue and green based on DEP_COLOR"
-
-                    sh "pip3 install -r ./src/requirements.txt"
-                    sh "python3 -m pytest ./src/app-test.py"
-                    sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
-                    sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
-
-                // stash name: "flask-yaml", includes: "flask-dep-serv.yaml"
+                    
             }
         }
         stage("Deploy to EKS") {
             agent { label "linuxagent2" }
             steps {
-                echo "yaml deploy chamoo334/p2official:${DEP_COLOR}"
-                sh "kubectl cluster-info"
+                echo "DEP_COLOR=${DEP_COLOR}"
+                // sh "kubectl apply -f kubernetes/flask-deployment.yaml"
+                // sh "kubectl apply -f kubernetes/flask-service.yaml"
+                // sh "kubectl apply -f kubernetes/nginx-ingress.yaml"
             }
         }
     }
