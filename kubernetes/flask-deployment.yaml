@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-stable
+spec:
+  replicas: 2
+  selector: #knows which pods to forward the request to
+    matchLabels:
+      app: flask-app
+      version: BLUE
+  template:
+    metadata:
+      labels:
+        app: flask-app
+        version: BLUE
+    spec:
+      containers:
+      - name: flask-app
+        image: chamoo334/p2official:BLUE
+        imagePullPolicy: Always
+        ports: #port container will expose
+        - containerPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-stage
+spec:
+  replicas: 2
+  selector: #knows which pods to forward the request to
+    matchLabels:
+      app: flask-app
+      version: GREEN
+  template:
+    metadata:
+      labels:
+        app: flask-app
+        version: GREEN
+    spec:
+      containers:
+      - name: flask-app
+        image: chamoo334/p2official:GREEN
+        imagePullPolicy: Always
+        ports: #port container will expose
+        - containerPort: 5000

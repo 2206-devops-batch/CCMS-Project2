@@ -1,7 +1,8 @@
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx-ingress
+  name: nginx-ingress-stable
   namespace: default
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -14,7 +15,26 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: flask-app-svc
+            name: flask-app-svc-stable
             port:
               number: 80
-
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-stage
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: flaskstage.app.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flask-app-svc-stage
+            port:
+              number: 80
