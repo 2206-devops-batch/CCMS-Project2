@@ -6,13 +6,13 @@
 - Running on a `Docker (Kubernetes)` Network,
 - Hosted by an `AWS EC2 Instance` Integrated through `Jenkins`.
 
-![CICD Pipeline](proj2-initial-cicd.png)
+![CICD Pipeline](./extras/proj2-initial-cicd.png)
 
 ## Continuous Integration
 
 - `GitHub webhook` notifies `Jenkins` of a `push` to `main`.
 - `Jenkins` then spins up an `EC2 instance` for `testing` and `building`.
-- If `unittests` pass, `dcoker image` is pushed to `Docker Hub`.
+- If `unittests` pass, `docker image` is pushed to `Docker Hub`.
 
 ## Continuous Deployment
 
@@ -24,6 +24,7 @@ After a successful push to `Docker Hub`, `Jenkins` uses `SSH` to `pull` and `run
 
 ```bash
 docker build -t ccms-project2-image
+
 docker run -p 5000:5000 --rm --name ccms-project2-container ccms-project2-image
 
 or
