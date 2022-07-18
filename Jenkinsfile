@@ -105,7 +105,7 @@ pipeline {
                   enableArtifactsList: false, scmWebUrl: "",
                   image: "", thumbnail: "",
                   title: JOB_NAME, link: BUILD_URL,
-                  description: "Please Visit --> ${BASE_URL}:50000",
+                  description: "Please Visit --> ${BASE_URL}:5000",
                   footer: "Jenkins Pipeline Build was a ${currentBuild.currentResult}",
                   result: currentBuild.currentResult
     } // always
