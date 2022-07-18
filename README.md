@@ -37,14 +37,3 @@ flask run
 <http://127.0.0.1:5000>
 
 ### K8s on EKS: kubectl apply -f .yaml
-1. kubectl apply -f nginx-ingress-controller.yaml
-2. kubectl apply -f flask-deployment.yaml
-3. kubectl apply -f flask-service.yaml
-4. kubectl apply -f nginx-ingress.yaml
-5. verify:
-   1. nginx-ingress: kubectl get svc --namespace=nginx-ingress
-   2. stable: curl -i -H "Host: flask.app.com" nginx-ingress-external-ip
-   3. stable: curl -i -H "Host: flaskstage.app.com" nginx-ingress-external-ip
-6. update flask-app-svc-stable version to GREEN
-7. verify backgroun of stable via:
-   1. curl -i -H "Host: flask.app.com" nginx-ingress-external-ip
