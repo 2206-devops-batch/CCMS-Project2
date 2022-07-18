@@ -38,14 +38,19 @@ pipeline {
             steps {
                 checkout scm
 
-                RESULTS3 = sh (script: "git log -1 | grep '\\[DEPLOY NEW VERSION\\]'", returnStatus: true)
+                script {
+                    RESULTS3 = sh (script: "git log -1 | grep '\\[SWITCH VERSION\\]'", returnStatus: true)
 
-                if (RESULTS3 == 0) {
-                    sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
-                } else {
-                    sh "kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml"
-                    sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
-                    sh "kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml"
+                    if (RESULTS3 == 0) {
+                        // sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
+                        echo "updating flask-app-stable service to switch to the new version"
+                    } else {
+                        echo "updating deployments, services, and ingress"
+                        // sh "kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml"
+                        // sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
+                        // sh "kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml"
+                    }
+
                 }
             }
         }
