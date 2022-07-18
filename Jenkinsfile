@@ -1,156 +1,113 @@
 pipeline {
-    options { skipDefaultCheckout() }
-    agent none
+  environment {
+    registry='chrisbarnes2000'
+    repo='ccms-project2'
+    DOCKERHUB_CREDENTIALS=credentials('DOCKER_AUTH_ID')
+    DOCKERHUB_REPO='${registry}/${repo}'
+    TAG="${BUILD_NUMBER}" // 'latest'
+  } // environment
 
-    stages {
-        stage("Verify Tools") {
-            agent { label "linux-agent1" }
-            options { timeout(time: 1, unit "MINUTES") }
-            steps {
-                sh '''
-                docker version
-                docker info
-                docker compose version
-                curl --version
-                jq --version
-                '''
-            }
-        }
+  agent any
 
+  stages {
+    stage('ENV CHECK'){
+      steps{
+        // Check For Required Tools
+        sh '''
+          docker version
+          docker info
+          docker-compose version
+          curl --version
+          jq --version
+        '''
 
-        stage('Local Pytest') {
-            agent { label "linux-agent1" }
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                sh 'pip3 install -r requirements.txt'
-                sh 'python3 -m pytest app-test.py'
-            }
-        }
-        // stage('Test, Build, & Archive') {
-        //     agent { label 'linux-agent1' }
-        //     steps {
-        //         checkout scm
-        //         sh 'pip3 install -r requirements.txt'
-        //         sh 'python3 -m pytest app-test.py'
-        //         sh 'sudo docker build . -t chamoo334/p2official'
-        //         sh 'sudo docker push chamoo334/p2official'
-        //     }
-        // }
-        stage('Build') {
-            agent { label "linux-agent1" }
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                echo 'Build Docker Image & Container'
-                sh 'docker build -t ccms-project2-image .'
-                sh 'docker run -d -p 5000:5000 -rm --name ccms-project2-container ccms-project2-image'
-                sh 'docker stop'
+        // Login To Docker
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 
-                sh 'sleep 10s'
+        sh 'docker system prune -af --volumes'
 
-                echo 'Build Docker Hub Image & Container'
-                // sh 'docker pull chamoo334/p2official:latest'
-                sh 'docker build -t ccms-project2-image chamoo334/p2official'
-                sh 'docker run -d -p 5000:5000 -rm --name ccms-project2-container ccms-project2-image'
-                sh 'docker stop'
-            }
-        }
-
-
-        stage('Smoke Test') {
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                input(message: "Run Live Tests?", ok; "Yes")
-            }
-        }
-
-
-
-        stage('Prune Docker data') {
-            agent { label "linux-agent2" }
-            options { timeout(time: 1, unit "MINUTES") }
-            steps {
-                sh 'docker system prune -a --volumes -f'
-            }
-        }
-
-
-        stage('Deploy - Start container') {
-            agent { label "docker" }
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                sh 'docker compose up -d --no-color --wait'
-                sh 'sleep 2s'
-                sh 'docker compose ps'
-            }
-        }
-        stage('Run tests against the container') {
-            agent { label "docker" }
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                sh 'curl http://localhost:3000/param?query=demo | jq'
-            }
-        }
-
-
-        stage('Accept Deployments') {
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                input(message: "Approve Deploy?", ok; "Yes")
-            }
-        }
-
-        // stage('Run') {
-        //     agent { label 'linux-agent2' }
-        //     steps {
-        //         // sh 'sudo docker system prune -af'
-        //         sh 'sudo docker rm -f p2_app'
-        //         sh 'sudo docker pull chamoo334/p2official:latest'
-        //         sh 'sudo docker run -p 5000:5000 -d --name p2_app chamoo334/p2official'
-        //     }
-        // }
-
-        stage('Deploy To Staging') {
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                echo 'Used To Configure Both Blue & Green Deployments'
-                // sh ''
-                sh 'minikube start' // Change to EKS
-                sh 'kubectl network  PROD'
-                sh 'kubectl apply -f flask-app-deployment.yml'  // PROD Deployment
-                sh 'kubectl apply -f flask-app-service.yml'
-                // sh 'docker push chamoo334/p2official:Prod'
-            }
-        }
-        stage('Deploy To Blue Production') {
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                echo 'Only Allow Deployments Tagged As A Blue-Feature'
-                // sh ''
-                sh 'minikube start' // Change to EKS
-                sh 'kubectl network  BLUE'
-                sh 'kubectl apply -f flask-app-deployment.yml'  // BLUE Deployment
-                sh 'kubectl apply -f flask-app-service.yml'
-                // sh 'docker push chamoo334/p2official:Blue'
-            }
-        }
-        stage('Deploy To Green Production') {
-            options { timeout(time: 2, unit "MINUTES") }
-            steps {
-                echo 'Only Allow Deployments Tagged As A Green-Feature'
-                // sh ''
-                sh 'minikube start' // Change to EKS
-                sh 'kubectl network  GREEN'
-                sh 'kubectl apply -f flask-app-deployment.yml'  // GREEN Deployment
-                sh 'kubectl apply -f flask-app-service.yml'
-                // sh 'docker push chamoo334/p2official:Green'
-            }
-        }
-
+        // Check The ENV Is Clean
+        sh 'docker-compose ps -a'
+        sh 'docker ps -a'
+      }
     }
-    post {
-        always {
-            sh 'docker compose down --remove-orphans -v'
-            sh 'docker compose ps'
-        }
+    stage('Build'){
+      steps {
+        echo '\n\nBUILDING... \n'
+        sh "docker build -t ${DOCKERHUB_REPO} ." //:${TAG}
+
+        echo "\n\nStarting Web Server... \n"
+        sh "docker run -d -p 5000:5000 --rm --name ${repo}-container ${DOCKERHUB_REPO}"
+
+        echo "Please Visit --> $BASE_URL:5000"
+      }
     }
-}
+    stage('Test'){
+      steps {
+        echo '\n\nTESTING... \n'
+        echo '\n\n SKIPPING TESTING... \n'
+        // sh "pytest app-test.py"
+      }
+    }
+    stage('Push'){
+      steps {
+        echo '\n\nPUSHING... \n'
+        sh "docker push ${DOCKERHUB_REPO}" //:${TAG}
+      }
+    }
+    stage('Pull'){
+      steps {
+        echo '\n\nPULLING... \n'
+        sh "docker pull ${DOCKERHUB_REPO}" //:${TAG}
+      }
+    }
+    // stage("Run Smoke Tests Against The Container") {
+    //   steps {
+    //     sh 'docker kill $(docker ps -q)'
+
+    //     echo '\n\nRE-BUILD LATEST FROM DOCKER HUB... \n'
+    //     sh "docker build -t ${DOCKERHUB_REPO} ." //:${TAG}
+
+    //     echo "\n\nStarting Web Server FOR SMOKE TESTS... \n"
+    //     sh "docker run -d -p 5000:5000 --rm --name ${repo}-container ${DOCKERHUB_REPO}"
+
+    //     echo "\nPlease Visit --> $BASE_URL:5000"
+    //     sh "curl ${BASE_URL}:5000 | jq"
+    //   }
+    // }
+    stage('Deploy'){
+      steps {
+        echo '\n\nDEPLOYING... \n'
+
+      }
+    }
+  } // stages
+
+
+  post {
+    always {
+      // Clean Everything UP -- Docker
+      // sh 'docker-compose down --remove-orphans -v'
+      // sh 'docker kill $(docker ps -q)'
+
+      // Clean The Docker ENV
+      // sh 'docker rm $(docker ps -a -q)'
+      // sh 'docker rmi $(docker images -q)'
+      // sh 'docker rmi $(path_current_build)'
+      sh 'docker system prune -af && docker logout'
+
+      // Send Status Report To Email & Discord
+      mail to: "Chris.Barnes.2000@me.com",
+           subject: "Job '${JOB_NAME}' (${BUILD_NUMBER}) Was A ${currentBuild.currentResult}",
+           body: "Please go to ${BUILD_URL} and verify the build"
+
+      discordSend webhookURL: "https://discord.com/api/webhooks/998320738769588224/4akFNyQItbFvUKmbGxJ-qMCyzMefF3QP4GbyNk73wry4_WfGPuDOWUlael_WN4_Yh677",
+                  enableArtifactsList: false, scmWebUrl: "",
+                  image: "", thumbnail: "",
+                  title: JOB_NAME, link: BUILD_URL,
+                  description: "Please Visit --> ${BASE_URL}:50000",
+                  footer: "Jenkins Pipeline Build was a ${currentBuild.currentResult}",
+                  result: currentBuild.currentResult
+    } // always
+  } // post
+} // pipeline
