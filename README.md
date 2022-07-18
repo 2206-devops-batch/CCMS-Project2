@@ -41,3 +41,4 @@ flask run
 
 1. kubectl apply -f .yaml
 2. kubectl apply -f .yaml
+3. kubectl apply -f .yaml
