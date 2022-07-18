@@ -22,7 +22,6 @@ pipeline {
                     }
                     
                     if (RESULTS2 == 1) {
-                        echo 'ci: [ci skip not found]'
                         checkout scm
                         sh "pip3 install -r ./src/requirements.txt"
                         sh "python3 -m pytest ./src/app-test.py"
@@ -37,11 +36,17 @@ pipeline {
         stage("Deploy to EKS") {
             agent { label "linuxagent2" }
             steps {
-                echo "DEP_COLOR=${DEP_COLOR}"
-                // checkout scm
-                // sh "kubectl apply -f kubernetes/flask-deployment.yaml"
-                // sh "kubectl apply -f kubernetes/flask-service.yaml"
-                // sh "kubectl apply -f kubernetes/nginx-ingress.yaml"
+                checkout scm
+
+                RESULTS3 = sh (script: "git log -1 | grep '\\[DEPLOY NEW VERSION\\]'", returnStatus: true)
+
+                if (RESULTS3 == 0) {
+                    sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
+                } else {
+                    sh "kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml"
+                    sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
+                    sh "kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml"
+                }
             }
         }
     }

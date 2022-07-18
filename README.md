@@ -39,6 +39,10 @@ flask run
 
 ## Kubernetes Development:
 
+### Initial Setup & Run
+
 1. kubectl apply -f .yaml
 2. kubectl apply -f .yaml
 3. kubectl apply -f .yaml
+
+### Zero Downtime Deployment
