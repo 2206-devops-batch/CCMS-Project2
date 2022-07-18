@@ -196,8 +196,6 @@ spec:
        #prometheus.io/port: "9113"
     spec:
       serviceAccountName: nginx-ingress
-      hostNetwork: true
-      dnsPolicy: ClusterFirst
       containers:
       - image: nginx/nginx-ingress:1.10.1
         imagePullPolicy: IfNotPresent

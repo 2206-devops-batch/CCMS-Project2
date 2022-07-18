@@ -1,14 +1,14 @@
 pipeline {
     agent none
     environment {
-       DEP_COLOR = 'BLUE'
+       DEP_COLOR = "BLUE"
     }
     options {
         skipDefaultCheckout()      // Don't checkout automatically
     }
     stages {
-        stage('Test, Build, & Archive') {
-            agent { label 'linuxagent1' }
+        stage("Test, Build, & Archive") {
+            agent { label "linuxagent1" }
             steps {
                 checkout scm
                 
@@ -20,20 +20,20 @@ pipeline {
                     }
                 }
 
-                echo 'TODO: change docker hub image information to reflect blue and green based on DEP_COLOR'
+                echo "TODO: change docker hub image information to reflect blue and green based on DEP_COLOR"
 
-                    sh 'pip3 install -r ./src/requirements.txt'
-                    sh 'python3 -m pytest ./src/app-test.py'
-                    sh 'sudo docker build . -t chamoo334/p2official'
-                    sh 'sudo docker push chamoo334/p2official'
+                    sh "pip3 install -r ./src/requirements.txt"
+                    sh "python3 -m pytest ./src/app-test.py"
+                    sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                    sh "sudo docker push chamoo334/p2official"
 
                 // stash name: "flask-yaml", includes: "flask-dep-serv.yaml"
             }
         }
-        stage('Deploy to EKS') {
-            agent { label 'linuxagent2' }
+        stage("Deploy to EKS") {
+            agent { label "linuxagent2" }
             steps {
-                echo "DEP_COLOR is '${DEP_COLOR}'"
+                echo "chamoo334/p2official:${DEP_COLOR}"
                 sh "kubectl cluster-info"
             }
         }
