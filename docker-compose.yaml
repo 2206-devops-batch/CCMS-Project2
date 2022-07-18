@@ -1,5 +1,10 @@
-version: '3.7'
+version: '3.9'
 services:
   app:
     build: .
-    image: chrisbarnes2000/ccms-project2:1.0
+    image: chrisbarnes2000/ccms-project2
+    ports:
+      - '5000:5000'
+    environment:
+      - 'FLASK_ENV=development'
+      - 'FLASK_APP=app'
