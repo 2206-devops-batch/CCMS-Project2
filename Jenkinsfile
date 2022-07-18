@@ -21,7 +21,7 @@ pipeline {
                         DEP_COLOR = "BLUE"
                     }
                     
-                    if (RESULTS2 == 0) {
+                    if (RESULTS2 == 1) {
                         checkout scm
                         sh "pip3 install -r ./src/requirements.txt"
                         sh "python3 -m pytest ./src/app-test.py"
