@@ -40,3 +40,4 @@ flask run
 ## Kubernetes Development:
 
 1. kubectl apply -f .yaml
+2. kubectl apply -f .yaml
