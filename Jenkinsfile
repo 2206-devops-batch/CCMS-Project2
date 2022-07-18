@@ -21,12 +21,22 @@ pipeline {
                         DEP_COLOR = "BLUE"
                     }
                     
+                    if (RESULTS2 == 1) {
+                        echo 'ci: [ci skip not found]'
+                        // checkout scm
+                        // sh "pip3 install -r ./src/requirements.txt"
+                        // sh "python3 -m pytest ./src/app-test.py"
+                        // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                        // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
+                    }
+
                     if (RESULTS2 == 0) {
-                        checkout scm
-                        sh "pip3 install -r ./src/requirements.txt"
-                        sh "python3 -m pytest ./src/app-test.py"
-                        sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
-                        sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
+                        echo 'skip ci: [ci skip found]'
+                        // checkout scm
+                        // sh "pip3 install -r ./src/requirements.txt"
+                        // sh "python3 -m pytest ./src/app-test.py"
+                        // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                        // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
                     }
                     
                 }
