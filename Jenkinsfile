@@ -17,29 +17,21 @@ pipeline {
 
                     echo "RESULTS1=${RESULTS1} and s RESULTS2=${RESULTS2}"
 
-                    result = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true)
-                    echo "${result}"
-                    if (result != 0) {
-                        echo "performing build...creating green"
-                    } else {
-                        echo "not running...staying with blue"
+                    if (RESULTS1 != 0) {
+                        DEP_COLOR = "BLUE"
                     }
 
-                    // if (RESULTS1 != 0) {
-                    //     DEP_COLOR = "BLUE"
-                    // }
-
-                    // echo "DEP_COLOR=${DEP_COLOR}"
-                    // if (RESULTS2 == 1) {
-                    //     echo "test, build, archive"
+                    echo "DEP_COLOR=${DEP_COLOR}"
+                    if (RESULTS2 != 0) {
+                        echo "test, build, archive"
                     //     // checkout scm
                     //     // sh "pip3 install -r ./src/requirements.txt"
                     //     // sh "python3 -m pytest ./src/app-test.py"
                     //     // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
                     //     // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
-                    // } else {
-                    //     echo "skipping ci"
-                    // }
+                    } else {
+                        echo "skipping ci"
+                    }
                     
                 }
                     
