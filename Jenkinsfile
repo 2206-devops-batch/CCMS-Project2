@@ -12,10 +12,10 @@ pipeline {
             steps {
                 
                 script {
-                    RESULTS1 = sh (script: "git log -1 | grep '\\[BLUE\\]'", returnStatus: true)
                     RESULTS2 = sh (script: "git log -1 | grep '\\[CI SKIP\\]'", returnStatus: true)
+                    RESULTS3 = sh (script: "git log -1 | grep '\\[PROD\\]'", returnStatus: true)
 
-                    if (RESULTS1 != 0) {
+                    if (RESULTS3 != 0) {
                         DEP_COLOR = "BLUE"
                     }
 
