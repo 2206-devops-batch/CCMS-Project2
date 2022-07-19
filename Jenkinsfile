@@ -15,7 +15,7 @@ pipeline {
                     RESULTS1 = sh (script: "git log -1 | grep '\\[BLUE\\]'", returnStatus: true)
                     RESULTS2 = sh (script: "git log -1 | grep '\\[CI SKIP\\]'", returnStatus: true)
 
-                    echo "RESULTS1=${RESULTS1} and RESULTS2=${RESULTS2}"
+                    echo "RESULTS1=${RESULTS1} and s RESULTS2=${RESULTS2}"
 
                     if (RESULTS1 == 0) {
                         DEP_COLOR = "BLUE"
