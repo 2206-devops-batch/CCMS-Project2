@@ -37,4 +37,28 @@ flask run
 
 <http://127.0.0.1:5000>
 
-# erase
+## AWS EKS
+
+### Setup & Run:
+
+```bash
+eksctl create cluster --name p2 --version 1.19 --region us-east-2 --nodegroup-name standard-nodes --node-type t3.small --nodes 2 --managed --node-ami-family Ubuntu2004
+
+kubectl apply -f kubernetes/nginx-ingress/nginx-ingress-controller.yaml
+kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml
+kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml
+kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml
+
+kubectl get svc --namespace=nginx-ingress
+```
+#### View Production (Blue)
+```bash
+curl -i -H "Host: flask.app.com" <cluster server url>
+```
+![Example flask.app.com](./extras/blue.png)
+
+#### View Development (Green)
+```bash
+curl -i -H "Host: flaskstage.app.com" <cluster server url>
+```
+![Example flaskstage.app.com](./extras/green.png)

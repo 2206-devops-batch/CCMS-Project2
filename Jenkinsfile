@@ -10,8 +10,8 @@ pipeline {
                     sh "sudo docker push chamoo334/p2official:GREEN"
                 
                 }        
-            }
         }
+
         stage("Deploy to EKS") {
             agent { label "linuxagent2" }
             steps {
