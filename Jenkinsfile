@@ -17,21 +17,21 @@ pipeline {
 
                     echo "RESULTS1=${RESULTS1} and s RESULTS2=${RESULTS2}"
 
-                    if (RESULTS1 == 0) {
-                        DEP_COLOR = "BLUE"
-                    }
+                    // if (RESULTS1 == 0) {
+                    //     DEP_COLOR = "BLUE"
+                    // }
 
-                    echo "DEP_COLOR=${DEP_COLOR}"
-                    if (RESULTS2 == 1) {
-                        echo "test, build, archive"
-                        // checkout scm
-                        // sh "pip3 install -r ./src/requirements.txt"
-                        // sh "python3 -m pytest ./src/app-test.py"
-                        // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
-                        // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
-                    } else {
-                        echo "skipping ci"
-                    }
+                    // echo "DEP_COLOR=${DEP_COLOR}"
+                    // if (RESULTS2 == 1) {
+                    //     echo "test, build, archive"
+                    //     // checkout scm
+                    //     // sh "pip3 install -r ./src/requirements.txt"
+                    //     // sh "python3 -m pytest ./src/app-test.py"
+                    //     // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                    //     // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
+                    // } else {
+                    //     echo "skipping ci"
+                    // }
                     
                 }
                     
