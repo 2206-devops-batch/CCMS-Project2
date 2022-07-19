@@ -17,6 +17,13 @@ pipeline {
 
                     echo "RESULTS1=${RESULTS1} and s RESULTS2=${RESULTS2}"
 
+                    result = sh (script: "git log -1 | grep '\\[ci skip\\]'", returnStatus: true) 
+                    if (result != 0) {
+                        echo "performing build..."
+                    } else {
+                        echo "not running..."
+                    }
+
                     // if (RESULTS1 == 0) {
                     //     DEP_COLOR = "BLUE"
                     // }
