@@ -7,7 +7,7 @@
 - Hosted by an `AWS EKS` cloud cluster and Integrated through `Jenkins`.
 - Something `Jenkins`
 
-![CICD Pipeline](./extras/proj2-initial-cicd.png)
+![CICD Pipeline](./extras/final-workflow.png)
 
 ## Continuous Integration
 

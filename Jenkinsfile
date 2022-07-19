@@ -20,12 +20,12 @@ pipeline {
                     }
 
                     if (RESULTS2 != 0) {
-                        echo "test, build, archive"
+                        echo "test, build, archive ${DEP_COLOR}"
                         checkout scm
-                        sh "pip3 install -r ./src/requirements.txt"
-                        sh "python3 -m pytest ./src/app-test.py"
-                        sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
-                        sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
+                        // sh "pip3 install -r ./src/requirements.txt"
+                        // sh "python3 -m pytest ./src/app-test.py"
+                        // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                        // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
                     } else {
                         echo "skipping ci"
                     }
