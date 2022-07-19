@@ -1,6 +1,8 @@
 pipeline {
     agent none
-
+    environment {
+       DEP_COLOR = "GREEN"
+    }
     options {
         skipDefaultCheckout()      // Don't checkout automatically
     }
@@ -10,21 +12,22 @@ pipeline {
             steps {
                 
                 script {
+                    RESULTS1 = sh (script: "git log -1 | grep '\\[BLUE\\]'", returnStatus: true)
                     RESULTS2 = sh (script: "git log -1 | grep '\\[CI SKIP\\]'", returnStatus: true)
-                    RESULTS3 = sh (script: "git log -1 | grep '\\[PROD\\]'", returnStatus: true)
-                    VERSION = "GREEN"
-                    
-                    if (RESULTS3 != 0) {
-                        VERSION = "BLUE"
+
+                    if (RESULTS1 != 0) {
+                        DEP_COLOR = "BLUE"
                     }
 
+                    echo " Using Docker tag ${DEP_COLOR}"
+
                     if (RESULTS2 != 0) {
-                        echo "test, build, archive ${VERSION}"
+                        echo "test, build, archive"
                         // checkout scm
                         // sh "pip3 install -r ./src/requirements.txt"
                         // sh "python3 -m pytest ./src/app-test.py"
-                        // sh "sudo docker build . -t chamoo334/p2official:${VERSION}"
-                        // sh "sudo docker push chamoo334/p2official:${VERSION}"
+                        // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                        // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
                     } else {
                         echo "skipping ci"
                     }
@@ -45,3 +48,4 @@ pipeline {
         }
     }
 }
+
