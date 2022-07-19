@@ -17,7 +17,7 @@ pipeline {
 
                     echo "RESULTS1=${RESULTS1} and RESULTS2=${RESULTS2}"
 
-                    if (RESULTS1 == 0) {
+                    if (RESULTS1 == 1) {
                         DEP_COLOR = "BLUE"
                     }
 
