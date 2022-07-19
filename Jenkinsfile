@@ -17,12 +17,12 @@ pipeline {
 
                     echo "RESULTS1=${RESULTS1} and RESULTS2=${RESULTS2}"
 
-                    if (RESULTS1 == 1) {
+                    if (RESULTS1 == 0) {
                         DEP_COLOR = "BLUE"
                     }
 
                     echo "DEP_COLOR=${DEP_COLOR}"
-                    if (RESULTS2 == 0) {
+                    if (RESULTS2 == 1) {
                         checkout scm
                         sh "pip3 install -r ./src/requirements.txt"
                         sh "python3 -m pytest ./src/app-test.py"
