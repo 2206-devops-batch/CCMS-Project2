@@ -15,20 +15,17 @@ pipeline {
                     RESULTS1 = sh (script: "git log -1 | grep '\\[BLUE\\]'", returnStatus: true)
                     RESULTS2 = sh (script: "git log -1 | grep '\\[CI SKIP\\]'", returnStatus: true)
 
-                    echo "RESULTS1=${RESULTS1} and s RESULTS2=${RESULTS2}"
-
                     if (RESULTS1 != 0) {
                         DEP_COLOR = "BLUE"
                     }
 
-                    echo "DEP_COLOR=${DEP_COLOR}"
                     if (RESULTS2 != 0) {
                         echo "test, build, archive"
-                    //     // checkout scm
-                    //     // sh "pip3 install -r ./src/requirements.txt"
-                    //     // sh "python3 -m pytest ./src/app-test.py"
-                    //     // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
-                    //     // sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
+                        checkout scm
+                        sh "pip3 install -r ./src/requirements.txt"
+                        sh "python3 -m pytest ./src/app-test.py"
+                        sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
+                        sh "sudo docker push chamoo334/p2official:${DEP_COLOR}"
                     } else {
                         echo "skipping ci"
                     }
@@ -40,11 +37,11 @@ pipeline {
         stage("Deploy to EKS") {
             agent { label "linuxagent2" }
             steps {
-                // checkout scm
+                checkout scm
                 echo "updating deployments, services, and ingress"
-                // sh "kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml"
-                // sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
-                // sh "kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml"
+                sh "kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml"
+                sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
+                sh "kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml"
             }
         }
     }
