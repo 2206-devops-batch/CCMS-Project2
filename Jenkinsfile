@@ -19,7 +19,7 @@ pipeline {
                         DEP_COLOR = "BLUE"
                     }
 
-                    if (RESULTS2 != 1) {
+                    if (RESULTS2 != 0) {
                         echo "test, build, archive ${DEP_COLOR}"
                         // checkout scm
                         // sh "pip3 install -r ./src/requirements.txt"
