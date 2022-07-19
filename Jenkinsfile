@@ -21,7 +21,7 @@ pipeline {
 
                     if (RESULTS2 != 1) {
                         echo "test, build, archive ${DEP_COLOR}"
-                        checkout scm
+                        // checkout scm
                         // sh "pip3 install -r ./src/requirements.txt"
                         // sh "python3 -m pytest ./src/app-test.py"
                         // sh "sudo docker build . -t chamoo334/p2official:${DEP_COLOR}"
