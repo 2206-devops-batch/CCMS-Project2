@@ -12,10 +12,10 @@ pipeline {
             steps {
                 
                 script {
-                    RESULTS1 = sh (script: "git log -1 | grep '\\[BLUE\\]'", returnStatus: true)
-                    RESULTS2 = sh (script: "git log -1 | grep '\\[CI SKIP\\]'", returnStatus: true)
+                    RESULTS1 = sh (script: "git log -1 | grep '\\[BLUE\\]'")
+                    RESULTS2 = sh (script: "git log -1 | grep '\\[CI SKIP\\]'")
 
-                    if (RESULTS1 != 0) {
+                    if (RESULTS1 != 1) {
                         DEP_COLOR = "BLUE"
                     }
 
@@ -39,9 +39,9 @@ pipeline {
             steps {
                 checkout scm
                 echo "updating deployments, services, and ingress"
-                sh "kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml"
-                sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
-                sh "kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml"
+                // sh "kubectl apply -f kubernetes/nginx-ingress/flask-deployment.yaml"
+                // sh "kubectl apply -f kubernetes/nginx-ingress/flask-service.yaml"
+                // sh "kubectl apply -f kubernetes/nginx-ingress/nginx-ingress.yaml"
             }
         }
     }
