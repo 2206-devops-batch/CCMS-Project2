@@ -1,0 +1,4 @@
+spec:
+  selector:
+    app: flask-app
+    version: GREEN

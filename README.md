@@ -62,3 +62,8 @@ curl -i -H "Host: flask.app.com" <cluster server url>
 curl -i -H "Host: flaskstage.app.com" <cluster server url>
 ```
 ![Example flaskstage.app.com](./extras/green.png)
+
+### To Switch Versions
+```bash
+kubectl patch service flask-app-svc-stable --patch-file kubernetes/nginx-ingress/patch-file.yaml
+```
