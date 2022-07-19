@@ -11,7 +11,7 @@ spec:
     protocol: TCP
   selector:
     app: flask-app
-    version: BLUE
+    version: GREEN
 ---
 apiVersion: v1
 kind: Service
