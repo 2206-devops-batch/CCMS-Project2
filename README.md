@@ -36,16 +36,3 @@ flask run
 ```
 
 <http://127.0.0.1:5000>
-
-## Kubernetes Development:
-
-### Initial Setup & Run
-
-1. eksctl create cluster --name p2 --version 1.19 --region us-east-2 --nodegroup-name standard-nodes --node-type t3.small --nodes 2 --managed --node-ami-family Ubuntu2004
-2. kubectl apply -f .yaml
-3. kubectl apply -f .yaml
-4. kubectl apply -f .yaml
-
-### Zero Downtime Deployment
-
-****dfsdfsdfs*****
